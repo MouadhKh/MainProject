@@ -10,17 +10,9 @@ pool:
 container: kaiiz3n/books-api-base:latest
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: 3.7
-    addToPath: true 
-
 - script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
-
-- script: |
-    pip install pytest pytest-azurepipelines
-    python -m pytest
-  displayName: 'pytest'
+    cd tests
+    pytest -v $(Build.SourcesDirectory)/tests/
+  env:
+    PYTHONPATH: $(Build.SourcesDirectory)
+  displayName: 'Run Tests'
