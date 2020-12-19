@@ -11,8 +11,8 @@ container: kaiiz3n/books-api-base:latest
 
 steps:
 - script: |
-    cd test
-    pytest -v $(Build.SourcesDirectory)/test/
+    cd tests
+    pytest -v $(Build.SourcesDirectory)/tests/
   env:
     PYTHONPATH: $(Build.SourcesDirectory)
   displayName: 'Run Tests'
