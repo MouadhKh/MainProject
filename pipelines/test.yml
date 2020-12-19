@@ -1,0 +1,18 @@
+trigger:
+  branches:
+    exclude:
+      - release
+      - dev
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+container: kaiiz3n/books-api-base:latest
+
+steps:
+- script: |
+    cd test
+    pytest -v $(Build.SourcesDirectory)/test/
+  env:
+    PYTHONPATH: $(Build.SourcesDirectory)
+  displayName: 'Run Tests'
