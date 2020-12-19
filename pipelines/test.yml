@@ -14,5 +14,5 @@ steps:
     cd tests
     pytest -v $(Build.SourcesDirectory)/tests/
   env:
-    PYTHONPATH: $(Build.SourcesDirectory)
+    PYTHONPATH: $(Build.SourcesDirectory)/app
   displayName: 'Run Tests'
