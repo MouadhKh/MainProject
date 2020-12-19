@@ -1,0 +1,60 @@
+trigger:
+  - release
+  - dev
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+variables:
+  branch: $(Build.SourceBranchName)
+  build_dir: $(Agent.BuildDirectory)
+  build_id: $(Build.BuildId)
+
+
+container: kaiiz3n/booksapi-build-container:latest
+
+
+steps:
+  - task: Docker@2
+    displayName: Login to Docker
+    inputs:
+      command: login
+      containerRegistry: dockerHub
+    target: host
+
+  - task: Docker@2
+    displayName: Build image
+    inputs:
+      command: build
+      arguments: --build-arg branch=$(branch)
+      repository: kaiiz3n/booksapi-pipeline
+      tags: |
+        latest
+        $(branch)
+        latest-$(branch)
+        $(build_id)-$(branch)
+    target: host
+
+  - task: Docker@2
+    displayName: Push image
+    inputs:
+      command: push
+      repository: kaiiz3n/booksapi-pipeline
+      tags: |
+        latest
+        $(branch)
+        latest-$(branch)
+        $(build_id)-$(branch)
+    target: host
+
+  - task: Docker@2
+    displayName: Logoff from Docker
+    inputs:
+      command: logout
+      containerRegistry: dockerHub
+    target: host
+
+ # - script: sleep 15
+ #   displayName: 'Wait for Docker Hub'
+
+ # deploy flask app missing
