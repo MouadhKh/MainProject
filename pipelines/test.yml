@@ -11,8 +11,9 @@ container: kaiiz3n/books-api-base:latest
 
 steps:
 - script: |
-    cd tests
-    pytest -v $(Build.SourcesDirectory)/tests/
+    pip install pytest
+    pip install pytest-cov
+    python -m pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html
   env:
     PYTHONPATH: $(Build.SourcesDirectory)
   displayName: 'Run Tests'
