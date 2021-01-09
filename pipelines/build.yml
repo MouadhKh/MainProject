@@ -18,7 +18,7 @@ steps:
 #test before pushing the dev image
   - task: UsePythonVersion@0
     inputs:
-     versionSpec: '3.8.2'
+     versionSpec: '3.8.x'
     displayName: 'Use Python $(python.version)'
 
   - script: |
