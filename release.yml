@@ -1,0 +1,61 @@
+trigger:
+  - release
+  - dev
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+variables:
+  branch: $(Build.SourceBranchName)
+  build_dir: $(Agent.BuildDirectory)
+  build_id: $(Build.BuildId)
+
+#TODO: build image for release
+container: kaiiz3n/books-api-base:latest
+
+
+steps:
+#test before pushing the dev image
+  - script: |
+      cd tests
+      pytest -v $(Build.SourcesDirectory)/tests/
+    env:
+      PYTHONPATH: $(Build.SourcesDirectory)/app
+    displayName: 'Run Tests'
+
+  - task: Docker@2
+    displayName: Login to Docker
+    inputs:
+      command: login
+      containerRegistry: dockerHub
+    target: host
+
+  - task: Docker@2
+    displayName: Build image
+    inputs:
+      command: build
+      arguments: --build-arg branch=$(branch)
+      repository: kaiiz3n/booksapi-release
+      tags: |
+        latest
+        $(branch)
+        latest-$(branch)
+        $(build_id)-$(branch)
+    target: host
+  - task: Docker@2
+    displayName: Push image
+    inputs:
+      command: push
+      repository: kaiiz3n/booksapi-release
+      tags: |
+        latest
+        $(branch)
+        latest-$(branch)
+        $(build_id)-$(branch)
+    target: host
+  - task: Docker@2
+    displayName: Logoff from Docker
+    inputs:
+      command: logout
+      containerRegistry: dockerHub
+    target: host
