@@ -16,6 +16,13 @@ container: kaiiz3n/books-api-base:latest
 
 steps:
 #test before pushing the dev image
+  - script: |
+      cd tests
+      pytest -v $(Build.SourcesDirectory)/tests/
+    env:
+      PYTHONPATH: $(Build.SourcesDirectory)/app
+    displayName: 'Run Tests'
+
   - task: UsePythonVersion@0
     inputs:
      versionSpec: '3.8.x'
