@@ -16,6 +16,11 @@ container: kaiiz3n/booksapi-build-container:latest
 
 steps:
 #test before pushing the dev image
+  - task: UsePythonVersion@0
+    inputs:
+     versionSpec: '3.8'
+    displayName: 'Use Python $(python.version)'
+
   - script: |
       python -m pip install --upgrade pip
       pip install -r requirements.txt
