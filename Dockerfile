@@ -10,6 +10,4 @@ RUN mkdir /opt/booksapi &&\
 RUN git clone https://sswbkr6yddyyyd75cozwco6u7gixwzruism5juheq43xtdepbcba@dev.azure.com/mouadh-kh/BooksAPI/_git/BooksAPI && cd BooksAPI && git checkout ${branch}
 WORKDIR /opt/booksapi
 
-ENTRYPOINT [ "python" ]
-
 CMD [ "opt/booksapi/app/app.py" ]
