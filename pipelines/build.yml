@@ -11,7 +11,7 @@ variables:
   build_id: $(Build.BuildId)
 
 
-container: kaiiz3n/books-api-base:latest
+container: kaiiz3n/books-api-build-container:latest
 
 
 steps:
