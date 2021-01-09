@@ -15,6 +15,22 @@ container: kaiiz3n/booksapi-build-container:latest
 
 
 steps:
+#test before pushing the dev image
+  - task: UsePythonVersion@0
+    inputs:
+     versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+     
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+    displayName: 'Install dependencies'
+
+  - script: |
+      pip install pytest pytest-azurepipelines
+      python -m pytest
+    displayName: 'pytest'
   - task: Docker@2
     displayName: Login to Docker
     inputs:
