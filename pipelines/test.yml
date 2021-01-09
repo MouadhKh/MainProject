@@ -1,9 +1,7 @@
 trigger:
   branches:
-    include:
+    exclude:
       - release
-      - dev
-      - test
 
 pool:
   vmImage: 'ubuntu-20.04'
