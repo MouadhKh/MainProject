@@ -33,7 +33,7 @@ steps:
         $(branch)
         latest-$(branch)
         $(build_id)-$(branch)
-
+    target: host
   - task: Docker@2
     displayName: Push image
     inputs:
@@ -44,9 +44,10 @@ steps:
         $(branch)
         latest-$(branch)
         $(build_id)-$(branch)
-
+    target: host
   - task: Docker@2
     displayName: Logoff from Docker
     inputs:
       command: logout
       containerRegistry: dockerHub
+    target: host
