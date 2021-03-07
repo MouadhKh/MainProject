@@ -11,7 +11,7 @@ variables:
   build_id: $(Build.BuildId)
 
 
-container: kaiiz3n/books-api-build-container:latest
+container: <DOCKER_USER>/<MAIN_PROJECT_BUILD_CONTAINER>:latest
 
 
 steps:
@@ -27,7 +27,7 @@ steps:
     displayName: Login to Docker
     inputs:
       command: login
-      containerRegistry: dockerHub
+      containerRegistry: <DOCKER_REGISTRY>
     target: host
 
   - task: Docker@2
@@ -35,7 +35,7 @@ steps:
     inputs:
       command: build
       arguments: --build-arg branch=$(branch)
-      repository: kaiiz3n/booksapi-dev
+      repository: <DOCKER_USER>/<MAIN_DEV>
       tags: |
         latest
         $(branch)
@@ -46,7 +46,7 @@ steps:
     displayName: Push image
     inputs:
       command: push
-      repository: kaiiz3n/booksapi-dev
+      repository: <DOCKER_USER>/<MAIN_DEV>
       tags: |
         latest
         $(branch)
@@ -57,5 +57,5 @@ steps:
     displayName: Logoff from Docker
     inputs:
       command: logout
-      containerRegistry: dockerHub
+      containerRegistry: <DOCKER_REGISTRY>
     target: host

@@ -7,7 +7,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-20.04'
 
-container: kaiiz3n/books-api-base:latest
+container: <DOCKER_USER>/<MAIN_PROJECT_BASE>:latest
 
 steps:
 - script: |
