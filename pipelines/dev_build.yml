@@ -1,0 +1,62 @@
+#Get triggered everytime some changes are pushed to dev
+#Reason of having this pipeline is to be able to test and build dev image simultaneously
+trigger:
+  - dev
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+variables:
+  branch: $(Build.SourceBranchName)
+  build_dir: $(Agent.BuildDirectory)
+  build_id: $(Build.BuildId)
+
+
+container: <DOCKER_USER>/<MAIN_PROJECT_BASE>:latest
+
+
+steps:
+  #test before pushing the dev image
+  - script: |
+      cd tests
+      pytest -v $(Build.SourcesDirectory)/tests/
+    env:
+      PYTHONPATH: $(Build.SourcesDirectory)/app
+    displayName: 'Run Tests'
+
+  - task: Docker@2
+    displayName: Login to Docker
+    inputs:
+      command: login
+      containerRegistry: <DOCKER_REGISTRY>
+    target: host
+
+  - task: Docker@2
+    displayName: Build image
+    inputs:
+      command: build
+      arguments: --build-arg branch=$(branch)
+      repository: <DOCKER_USER>/<MAIN_DEV>
+      tags: |
+        latest
+        $(branch)
+        latest-$(branch)
+        $(build_id)-$(branch)
+    target: host
+  - task: Docker@2
+    displayName: Push image
+    inputs:
+      command: push
+      repository: <DOCKER_USER>/<MAIN_DEV>
+      tags: |
+        latest
+        $(branch)
+        latest-$(branch)
+        $(build_id)-$(branch)
+    target: host
+  - task: Docker@2
+    displayName: Logoff from Docker
+    inputs:
+      command: logout
+      containerRegistry: <DOCKER_REGISTRY>
+    target: host
