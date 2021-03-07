@@ -1,7 +1,6 @@
-#Get triggered everytime some changes are pushed to dev
-#Reason of having this pipeline is to be able to test and build dev image simultaneously
 trigger:
-  - dev
+- release
+- dev
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -12,7 +11,7 @@ variables:
   build_id: $(Build.BuildId)
 
 
-container: <DOCKER_USER>/<MAIN_PROJECT_BASE>:latest
+container: <DOCKER_USER>/<MAIN_PROJECT_RELEASE_CONTAINER>:latest
 
 
 steps:
@@ -36,7 +35,7 @@ steps:
     inputs:
       command: build
       arguments: --build-arg branch=$(branch)
-      repository: <DOCKER_USER>/<MAIN_DEV>
+      repository: <DOCKER_USER>/<MAIN_RELEASE>
       tags: |
         latest
         $(branch)
@@ -47,7 +46,7 @@ steps:
     displayName: Push image
     inputs:
       command: push
-      repository: <DOCKER_USER>/<MAIN_DEV>
+      repository: <DOCKER_USER>/<MAIN_RELEASE>
       tags: |
         latest
         $(branch)
