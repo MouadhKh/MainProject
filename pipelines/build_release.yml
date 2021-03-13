@@ -15,7 +15,6 @@ container: <DOCKER_USER>/<MAIN_PROJECT_RELEASE_CONTAINER>:latest
 
 
 steps:
-  #test before pushing the dev image
   - script: |
       cd tests
       pytest -v $(Build.SourcesDirectory)/tests/
