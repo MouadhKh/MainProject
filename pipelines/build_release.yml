@@ -11,8 +11,6 @@ variables:
   build_id: $(Build.BuildId)
 
 
-container: <DOCKER_USER>/<MAIN_PROJECT_RELEASE_CONTAINER>:latest
-
 
 steps:
   - script: |
