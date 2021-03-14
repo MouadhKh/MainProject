@@ -1,0 +1,26 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: Docker@2
+    displayName: Login to Docker
+    inputs:
+      command: login
+      containerRegistry: <DOCKER_REGISTRY>
+
+  - task: Docker@2
+    displayName: Build and push
+    inputs:
+      command: buildAndPush
+      Dockerfile: ProductionContainerDockerfile
+      repository: <DOCKER_USER>/<PRODUCTION_CONTAINER>
+      tags: |
+        latest
+
+  - task: Docker@2
+    displayName: Logoff from Docker
+    inputs:
+      command: logout
+      containerRegistry: <DOCKER_REGISTRY>
