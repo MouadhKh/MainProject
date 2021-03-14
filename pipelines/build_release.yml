@@ -1,6 +1,5 @@
 trigger:
 - release
-- dev
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -11,7 +10,7 @@ variables:
   build_id: $(Build.BuildId)
 
 
-
+container: <DOCKER_USER>/<PRODUCTION_CONTAINER>:latest
 steps:
   - script: |
       cd tests
