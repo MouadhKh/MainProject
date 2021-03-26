@@ -1,5 +1,4 @@
 trigger:
-  - release
   - dev
 
 pool:
