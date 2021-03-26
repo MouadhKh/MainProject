@@ -1,0 +1,16 @@
+trigger:
+  branches:
+    exclude:
+      - release
+pool:
+  vmImage: 'ubuntu-20.04'
+
+container: <DOCKER_USER>/<MAIN_PROJECT_BASE>:latest
+
+steps:
+- script: |
+    cd tests
+    pytest -v $(Build.SourcesDirectory)/tests/
+  env:
+    PYTHONPATH: $(Build.SourcesDirectory)/app
+  displayName: 'Run Tests'
